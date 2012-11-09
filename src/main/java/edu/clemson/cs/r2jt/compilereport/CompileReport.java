@@ -3,7 +3,7 @@ package edu.clemson.cs.r2jt.compilereport;
 import edu.clemson.cs.r2jt.ResolveCompiler;
 import edu.clemson.cs.r2jt.collections.List;
 
-// import webui.utils.WebSocketWriter;
+import webui.utils.WebSocketWriter;
 
 public class CompileReport {
 
@@ -21,7 +21,7 @@ public class CompileReport {
     private StringBuilder myBugReportBuffer = new StringBuilder();
     private String myOutput = "";
 
-    //public  WebSocketWriter myWsWriter = null;
+    public  WebSocketWriter myWsWriter = null;
     //private List<String> proveList = null;
 
     public CompileReport() {
@@ -70,9 +70,9 @@ public class CompileReport {
         facilityName = facName;
     }
 
-    /*public void setWsWriter(WebSocketWriter writer){
+    public void setWsWriter(WebSocketWriter writer){
         myWsWriter = writer;
-    }*/
+    }
 
     public boolean vcSuccess() {
         return vc;
@@ -153,7 +153,7 @@ public class CompileReport {
         myOutput = op;
     }
 
-    /*public WebSocketWriter getWsWriter(){
+    public WebSocketWriter getWsWriter(){
         return myWsWriter;
-    }*/
+    }
 }

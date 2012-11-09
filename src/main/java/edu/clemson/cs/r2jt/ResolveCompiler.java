@@ -11,7 +11,7 @@ import edu.clemson.cs.r2jt.proving.Prover;
 import edu.clemson.cs.r2jt.utilities.Flag;
 import edu.clemson.cs.r2jt.utilities.FlagDependencies;
 
-// import webui.utils.WebSocketWriter;
+import webui.utils.WebSocketWriter;
 
 public class ResolveCompiler {
 

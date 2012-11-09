@@ -605,7 +605,8 @@ public final class Prover {
      */
     private void proveVC(final VerificationCondition vC, final Metrics metrics,
             FileWriter proofFile, VCProver p) throws VCInconsistentException {
-
+        
+        StringBuilder sb = new StringBuilder(); 
         if (myInstanceEnvironment.flags.isFlagSet(FLAG_VERBOSE)) {
             System.out.println("\n\n############################# VC "
                     + "#############################");
@@ -634,10 +635,13 @@ public final class Prover {
             }
         }
         if (myInstanceEnvironment.flags.isFlagSet(ResolveCompiler.FLAG_WEB)) {
-            output.append("<vcProve id=\"" + vC.getName() + "\">");
+            //sb.append("<vcProve id=\"" + vC.getName() + "\">");
+            sb.append("{\"id\":\"");
+            sb.append(vC.getName());
+            sb.append("\",\"result\":\"");
         }
         else {
-            output.append(vC.getName() + " ");
+            sb.append(vC.getName() + " ");
         }
         // System.out.print(vC.getName() + " ");
 
@@ -647,7 +651,7 @@ public final class Prover {
         }
         catch (UnableToProveException e) {
             exitInformation = e;
-            output.append("Skipped after ");
+            sb.append("Skipped after ");
             // System.out.print("Skipped after ");
             allProved = false;
 
@@ -660,7 +664,7 @@ public final class Prover {
         }
         catch (VCProvedException e) {
             exitInformation = e;
-            output.append("Proved in ");
+            sb.append("Proved in ");
             // System.out.print("Proved in ");
 
             if (proofFile != null) {
@@ -674,7 +678,8 @@ public final class Prover {
 
         printExitReport(startTime, exitInformation);
         if (myInstanceEnvironment.flags.isFlagSet(ResolveCompiler.FLAG_WEB)) {
-            output.append("</vcProve>");
+            sb.append("\"}");
+            outputMessage(sb.toString());
             myInstanceEnvironment.getCompileReport().setProveVCs(
                     output.toString());
         }
@@ -959,6 +964,14 @@ public final class Prover {
         mainFileName = tempfile + ".proof";
 
         return mainFileName;
+    }
+    private void outputMessage(String msg){
+        if(myInstanceEnvironment.getCompileReport().getWsWriter() != null){
+            myInstanceEnvironment.getCompileReport().getWsWriter().writeTextMessage(msg);
+        }
+        else{
+            output.append(msg);
+        }
     }
 
     public void createFlags(FlagManager m) {}
