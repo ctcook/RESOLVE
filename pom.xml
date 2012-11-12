@@ -181,6 +181,11 @@
             <artifactId>git-plugin</artifactId>
             <version>0.0.1-alpha3</version>
         </dependency>
+        <dependency>
+            <groupId>1</groupId>
+            <artifactId>websocket</artifactId>
+            <version>1</version>
+        </dependency>
     </dependencies>
 </project>
 

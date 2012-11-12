@@ -542,7 +542,7 @@ public final class Prover {
      * @param exitInformation
      *            A prover exception containing the metric information to print.
      */
-    private void printExitReport(long startTime,
+    private String printExitReport(long startTime,
             final ProverException exitInformation) {
 
         Metrics metrics = exitInformation.getMetrics();
@@ -571,6 +571,7 @@ public final class Prover {
         if (myInstanceEnvironment.flags.isFlagSet(FLAG_VERBOSE)) {
             output.append("PROOF:\n" + exitInformation);
         }
+        return (endTime - startTime) + " milliseconds.";
     }
 
     /**
@@ -605,8 +606,8 @@ public final class Prover {
      */
     private void proveVC(final VerificationCondition vC, final Metrics metrics,
             FileWriter proofFile, VCProver p) throws VCInconsistentException {
-        
-        StringBuilder sb = new StringBuilder(); 
+
+        StringBuilder sb = new StringBuilder();
         if (myInstanceEnvironment.flags.isFlagSet(FLAG_VERBOSE)) {
             System.out.println("\n\n############################# VC "
                     + "#############################");
@@ -636,6 +637,8 @@ public final class Prover {
         }
         if (myInstanceEnvironment.flags.isFlagSet(ResolveCompiler.FLAG_WEB)) {
             //sb.append("<vcProve id=\"" + vC.getName() + "\">");
+            sb.append("{\"job\":\"verify\",\"status\":\"processing\",");
+            sb.append("\"result\":");
             sb.append("{\"id\":\"");
             sb.append(vC.getName());
             sb.append("\",\"result\":\"");
@@ -678,7 +681,8 @@ public final class Prover {
 
         printExitReport(startTime, exitInformation);
         if (myInstanceEnvironment.flags.isFlagSet(ResolveCompiler.FLAG_WEB)) {
-            sb.append("\"}");
+            sb.append(printExitReport(startTime, exitInformation));
+            sb.append("\"}}");
             outputMessage(sb.toString());
             myInstanceEnvironment.getCompileReport().setProveVCs(
                     output.toString());
@@ -965,11 +969,13 @@ public final class Prover {
 
         return mainFileName;
     }
-    private void outputMessage(String msg){
-        if(myInstanceEnvironment.getCompileReport().getWsWriter() != null){
-            myInstanceEnvironment.getCompileReport().getWsWriter().writeTextMessage(msg);
+
+    private void outputMessage(String msg) {
+        if (myInstanceEnvironment.getCompileReport().getWsWriter() != null) {
+            myInstanceEnvironment.getCompileReport().getWsWriter().sendMessage(
+                    msg);
         }
-        else{
+        else {
             output.append(msg);
         }
     }

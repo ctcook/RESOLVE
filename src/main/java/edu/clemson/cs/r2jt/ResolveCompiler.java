@@ -101,6 +101,19 @@ public class ResolveCompiler {
         //Main.main(args);
     }
 
+    public ResolveCompiler(String[] args, MetaFile inputFile,
+            HashMap<String, MetaFile> userFileMap, WebSocketWriter writer) {
+        myCompileReport = new CompileReport();
+        myCompileReport.setFacilityName(inputFile.getMyFileName());
+        //myTargetFileName = fileArray[0];
+        //myTargetSource = fileArray[3];
+        myInputFile = inputFile;
+        myUserFileMap = userFileMap;
+        myCompileReport.setWsWriter(writer);
+        //System.out.println(fileName);
+        //Main.main(args);
+    }
+
     public ResolveCompiler(String[] args) {
         myCompileReport = new CompileReport();
         //myCompileReport.setFacilityName(inputFile.getMyFileName());
